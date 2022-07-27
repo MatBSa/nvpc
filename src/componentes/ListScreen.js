@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"
 
 export default function ListScreen({ repos, onFilterChange, filteredText }) {
 
@@ -13,14 +13,14 @@ export default function ListScreen({ repos, onFilterChange, filteredText }) {
       />
 
       {repos.map((repo) => {
-        
+
         return (
-            <div className="row" key={repo.id}>
+          <div className="row blue lighten-5" key={repo.id} style={{ padding: '5px', margin: '5px', border: '1px solid lightgray', borderRadius: '15px', }}>
             <div className="col s12 m15">
-              <div className="card blue-grey darken-1">
+              <div className="card teal lighten-2">
                 <div className="card-content white-text">
                   <span className="card-title">{repo.name}</span>
-                  <br/>
+                  <br />
                   <div>
                     <p>
                       {'Descrição: '}
@@ -29,7 +29,7 @@ export default function ListScreen({ repos, onFilterChange, filteredText }) {
                       {repo.description}
                     </p>
                   </div>
-                  <br/>
+                  <br />
                   <div>
                     <p>
                       {'Atualizado em: '}
@@ -49,8 +49,8 @@ export default function ListScreen({ repos, onFilterChange, filteredText }) {
               </div>
             </div>
           </div>
-        );
+        )
       })}
     </>
-  );
+  )
 }
