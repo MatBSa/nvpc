@@ -1,16 +1,32 @@
 import React from "react"
 
-export default function ListScreen({ repos, onFilterChange, filteredText }) {
+export default function ListScreen({ repos, filters, onSelectedFilterChange, currentFilter, onFilterChange, filteredText, sorts, onSortChange, currentSort }) {
 
   return (
     <>
-      <input
-        type="text"
-        placeholder="Filtro..."
-        value={filteredText}
-        onChange={onFilterChange}
-        style={{ marginTop: "20px", marginBottom: "20px" }}
-      />
+      <div>
+        <input
+          type="text"
+          placeholder="Pesquisar"
+          value={filteredText}
+          onChange={onFilterChange}
+          style={{ marginTop: "20px", marginBottom: "20px" }}
+        />
+      </div>
+      <div class="input-field col s12" style={{ display: 'inline-block' }}>
+        <select className="browser-default" value={currentFilter} onChange={onSelectedFilterChange} >
+          {filters.map(filter => {
+            return <option key={filter}>{filter}</option>
+          })}
+        </select>
+      </div>
+      <div class="input-field col s12" style={{ display: 'inline-block', margin: "10px" }}>
+        <select className="browser-default" value={currentSort} onChange={onSortChange} >
+          {sorts.map(sort => {
+            return <option key={sort}>{sort}</option>
+          })}
+        </select>
+      </div>
 
       {repos.map((repo) => {
 
@@ -38,11 +54,14 @@ export default function ListScreen({ repos, onFilterChange, filteredText }) {
                       {'Tamanho: '}
                       {repo.size}{' mb'}
                       {' - '}
-                      {'Possui forks? '}
+                      {'Possui forks: '}
                       {repo.fork === true ? 'Sim' : 'Não'}
                       {' - '}
-                      {'Arquivado? '}
-                      {repo.archived ? 'Sim' : 'Não'}
+                      {'Arquivado: '}
+                      {repo.archived === true ? 'Sim' : 'Não'}
+                      {' - '}
+                      {'Possui issues: '}
+                      {repo.has_issues === true ? 'Sim' : 'Não'}
                     </p>
                   </div>
                 </div>
