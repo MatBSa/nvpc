@@ -35,20 +35,18 @@ export default function App() {
       newFilteredRepos = newFilteredRepos.filter(repo => {
         return repo.name.toLowerCase().includes(filteredText)
       })
-      if (currentFilter === 'Forks') {
-        newFilteredRepos = newFilteredRepos.filter(repo => {
-          return repo.fork === true
-        })
-      } else if (currentFilter === 'Tem issues') {
-        newFilteredRepos = newFilteredRepos.filter(repo => {
-          return repo.has_issues === true
-        })
-      } else if (currentFilter === 'Arquivado') {
-        newFilteredRepos = newFilteredRepos.filter(repo => {
-          return repo.archived === true
-        })
-      }
-    } else if (currentFilter === 'Forks') {
+      newFilteredRepos = filter(currentFilter, newFilteredRepos)
+    } else {
+      newFilteredRepos = filter(currentFilter, newFilteredRepos)
+    }
+
+    newFilteredRepos = doSort(currentSort, newFilteredRepos)
+
+    setFilteredRepos(newFilteredRepos)
+  }, [repos, filteredText, currentFilter, filteredRepos])
+
+  const filter = (currentFilter, newFilteredRepos) => {
+    if (currentFilter === 'Forks') {
       newFilteredRepos = newFilteredRepos.filter(repo => {
         return repo.fork === true
       })
@@ -62,10 +60,24 @@ export default function App() {
       })
     }
 
-    setFilteredRepos(newFilteredRepos)
-  }, [repos, filteredText, currentFilter, filteredRepos])
+    return newFilteredRepos
+  }
 
-  // TO DO: Fazer o useEffect do sort !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  const doSort = (currentSort, newFilteredRepos) => {
+    if (currentSort === 'Alfabético') {
+      newFilteredRepos = newFilteredRepos.sort(function (a, b) {
+        return a.name < b.name
+      })
+    } else if (currentSort === 'Último commit') {
+      newFilteredRepos = newFilteredRepos.sort((a, b) => {
+        if (a.updated_at > b.updated_at) return -1
+        if (a.updated_at < b.updated_at) return 1
+        return 0
+      })
+    }
+
+    return newFilteredRepos
+  }
 
   const handleFilterChange = (event) => {
     const text = event.target.value.trim()
