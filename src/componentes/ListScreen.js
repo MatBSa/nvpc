@@ -13,14 +13,14 @@ export default function ListScreen({ repos, filters, onSelectedFilterChange, cur
           style={{ marginTop: "20px", marginBottom: "20px" }}
         />
       </div>
-      <div class="input-field col s12" style={{ display: 'inline-block' }}>
+      <div className="input-field col s12" style={{ display: 'inline-block' }}>
         <select className="browser-default" value={currentFilter} onChange={onSelectedFilterChange} >
           {filters.map(filter => {
             return <option key={filter}>{filter}</option>
           })}
         </select>
       </div>
-      <div class="input-field col s12" style={{ display: 'inline-block', margin: "10px" }}>
+      <div className="input-field col s12" style={{ display: 'inline-block', margin: "10px" }}>
         <select className="browser-default" value={currentSort} onChange={onSortChange} >
           {sorts.map(sort => {
             return <option key={sort}>{sort}</option>

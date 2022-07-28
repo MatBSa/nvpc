@@ -1,6 +1,6 @@
 import './App.css'
 import React, { useEffect, useState } from 'react'
-import api from './api/apiService.js'
+import api from './api/http-common'
 import ListScreen from './componentes/ListScreen.js'
 
 const FIRLTERS = [
@@ -24,11 +24,10 @@ export default function App() {
   const [currentSort, setCurrentSort] = useState(SORTERS[0])
 
   useEffect(() => {
-    const fetchRepos = async () => {
-      await api.get().then(response => setRepos(response.data))
-    }
-    fetchRepos()
-  })
+    api
+      .get(`/users/MatBSa/repos`)
+      .then(response => setRepos(response.data))
+  }, [])
 
   useEffect(() => {
     let newFilteredRepos = [...repos]
@@ -36,29 +35,35 @@ export default function App() {
       newFilteredRepos = newFilteredRepos.filter(repo => {
         return repo.name.toLowerCase().includes(filteredText)
       })
-    }
-    setFilteredRepos(newFilteredRepos)
-  }, [repos, filteredText])
-
-  useEffect(() => {
-    let newFilterRepos = filteredRepos
-    if (currentFilter === 'Forks') {
-      newFilterRepos = newFilterRepos.filter(repo => {
+      if (currentFilter === 'Forks') {
+        newFilteredRepos = newFilteredRepos.filter(repo => {
+          return repo.fork === true
+        })
+      } else if (currentFilter === 'Tem issues') {
+        newFilteredRepos = newFilteredRepos.filter(repo => {
+          return repo.has_issues === true
+        })
+      } else if (currentFilter === 'Arquivado') {
+        newFilteredRepos = newFilteredRepos.filter(repo => {
+          return repo.archived === true
+        })
+      }
+    } else if (currentFilter === 'Forks') {
+      newFilteredRepos = newFilteredRepos.filter(repo => {
         return repo.fork === true
       })
     } else if (currentFilter === 'Tem issues') {
-      newFilterRepos = newFilterRepos.filter(repo => {
+      newFilteredRepos = newFilteredRepos.filter(repo => {
         return repo.has_issues === true
       })
     } else if (currentFilter === 'Arquivado') {
-      newFilterRepos = newFilterRepos.filter(repo => {
+      newFilteredRepos = newFilteredRepos.filter(repo => {
         return repo.archived === true
       })
-    } else if (currentFilter === 'Escolha un filtro' && filteredText.trim().length === 0) {
-      newFilterRepos = [...repos]
     }
-    setFilteredRepos(newFilterRepos)
-  }, [repos, currentFilter, filteredRepos, filteredText])
+
+    setFilteredRepos(newFilteredRepos)
+  }, [repos, filteredText, currentFilter, filteredRepos])
 
   // TO DO: Fazer o useEffect do sort !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
